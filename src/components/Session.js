@@ -1,10 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { AccountContext } from "./Account";
+import { AccountContext } from './Account';
+import { useNavigate } from 'react-router-dom';
 
 const Session = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const { getSession } = useContext(AccountContext);
+    const { getSession, logout } = useContext(AccountContext);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         getSession()
@@ -14,7 +17,21 @@ const Session = () => {
             })
     }, [getSession])
 
-    return <div>{isLoggedIn ? "You are logged in" : "Please Login"}</div>
+    return (
+        <div>
+            {
+                isLoggedIn 
+                    ? <button onClick={() => { 
+                        logout(); 
+                        setIsLoggedIn(false); 
+                    }}>Log Out</button>
+                    : <div>
+                        <button onClick={() => { navigate('../login'); }}>Log In</button>
+                        <button onClick={() => { navigate('../createAccount'); }}>Sign Up</button>
+                    </div>
+            }
+        </div>
+    );
 };
 
 export default Session;

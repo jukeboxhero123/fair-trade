@@ -1,14 +1,12 @@
 import React from 'react';
+import Session from './Session';
+
 export default function Landing() {
 
-    const goToSignIn = () => {
-        window.location = '/login'
-    }
     return (
         <div>
-        <h1>Fair Trade</h1>
-        <button onClick={goToSignIn}>Log In</button>
-        <button>Sign Up</button>
+            <h1>Fair Trade</h1>
+            <Session/>
         </div>
     )
 }
