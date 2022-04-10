@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { AccountContext } from './Account';
 import { useNavigate } from 'react-router-dom';
 
-const Session = () => {
+const AuthActions = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const { getSession, logout } = useContext(AccountContext);
@@ -34,4 +34,4 @@ const Session = () => {
     );
 };
 
-export default Session;
+export default AuthActions;

@@ -1,12 +1,12 @@
 import React from 'react';
-import Session from './Session';
+import AuthActions from './AuthActions';
 
 export default function Landing() {
 
     return (
         <div>
             <h1>Fair Trade</h1>
-            <Session/>
+            <AuthActions/>
         </div>
     )
 }
