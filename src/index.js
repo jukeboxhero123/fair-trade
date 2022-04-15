@@ -8,7 +8,7 @@ import {
   InMemoryCache,
   ApolloProvider,
 } from "@apollo/client";
-console.log(process.env.REACT_APP_FAIR_TRADE_SERVICE_URL);
+
 const client = new ApolloClient({
   uri: process.env.REACT_APP_FAIR_TRADE_SERVICE_URL,
   cache: new InMemoryCache()
