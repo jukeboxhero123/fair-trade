@@ -21,7 +21,7 @@ export default function ConfirmAccount() {
 
         cognitoUser.confirmRegistration(code, true, (err, data) => {
             if (err) {
-                console.err(err);
+                console.log(err);
             } else {
                 console.log(data);
                 navigate("../login");

@@ -13,6 +13,8 @@ const AuthActions = () => {
         getSession()
             .then(session => {
                 console.log("Session:", session);
+                // Not safe LOL think of better way to do this
+                localStorage.setItem("user_uuid", session.accessToken.payload.sub);
                 setIsLoggedIn(true);
             })
     }, [getSession])
