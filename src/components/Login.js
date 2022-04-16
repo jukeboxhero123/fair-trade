@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AccountContext } from "./Account";
+import { AccountContext } from "../contexts/AccountContext";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -9,7 +9,7 @@ export default function Login() {
     const navigate = useNavigate();
 
     const { authenticate } = useContext(AccountContext);
-
+    
     const onSubmit = (e) => {
         e.preventDefault();
         authenticate(email, password)

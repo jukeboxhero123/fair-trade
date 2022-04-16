@@ -3,22 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-} from "@apollo/client";
-
-const client = new ApolloClient({
-  uri: process.env.REACT_APP_FAIR_TRADE_SERVICE_URL,
-  cache: new InMemoryCache()
-});
+import AppProviders from './AppProviders';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
+    <AppProviders>
       <App />
-    </ApolloProvider>
+    </AppProviders>
   </React.StrictMode>,
   document.getElementById('root')
 );
