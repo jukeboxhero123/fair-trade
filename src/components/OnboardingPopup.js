@@ -9,7 +9,7 @@ export default function OnboardingPopup({onClose}) {
     const [bio, setBio] = useState("");
     const [location, setLocation] = useState("");
 
-    const [updateProfile, { loading, error, data }] = useMutation(UPDATE_PROFILE);
+    const [updateProfile] = useMutation(UPDATE_PROFILE);
 
     const onSubmit = (e) => {
         e.preventDefault();
