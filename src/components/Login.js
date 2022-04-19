@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { AccountContext } from "../contexts/AccountContext";
 
 export default function Login() {
@@ -30,6 +30,7 @@ export default function Login() {
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                 <button type="submit">Login</button>
             </form>
+            <Link to="/createAccount">Sign up</Link>
         </div>
 
     )
