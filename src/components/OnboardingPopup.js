@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+import { useMutation } from '@apollo/client';
+import { UPDATE_PROFILE } from "../graphql/mutations/updateProfile";
 
 export default function OnboardingPopup({onClose}) {
     const [firstName, setFirstName] = useState("");
@@ -7,10 +9,23 @@ export default function OnboardingPopup({onClose}) {
     const [bio, setBio] = useState("");
     const [location, setLocation] = useState("");
 
+    const [updateProfile, { loading, error, data }] = useMutation(UPDATE_PROFILE);
+
     const onSubmit = (e) => {
         e.preventDefault();
+        updateProfile({
+            variables: { 
+                updateUserInput: {
+                    address: location.label,
+                    bio: bio,
+                    first_name: firstName,
+                    last_name: lastName,
+                    is_onboarded: true,
+                    user_uuid: localStorage.getItem("user_uuid")
+                }
+            },
+        });
         onClose();
-        // Make request to update yongo
     }
 
     return (
