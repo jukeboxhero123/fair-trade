@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { useMutation } from '@apollo/client';
 import { UPDATE_PROFILE } from "../graphql/mutations/updateProfile";
+import { AccountContext } from '../contexts/AccountContext';
 
-export default function OnboardingPopup({onClose}) {
+export default function OnboardingPopup({setDisplayOnboard}) {
+    const { user } = useContext(AccountContext);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [bio, setBio] = useState("");
@@ -21,11 +23,11 @@ export default function OnboardingPopup({onClose}) {
                     first_name: firstName,
                     last_name: lastName,
                     is_onboarded: true,
-                    user_uuid: localStorage.getItem("user_uuid")
+                    user_uuid: user.user_uuid
                 }
             },
         });
-        onClose();
+        setDisplayOnboard(false);
     }
 
     return (

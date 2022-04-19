@@ -19,17 +19,13 @@ export default function Home() {
     const { user } = useContext(AccountContext);
     const [displayOnboard, setDisplayOnboard] = useState(!user.is_onboarded);
 
-    const closeOnboarding =()=>{
-        setDisplayOnboard(false)
-    }
-
     return (
         <div>
             <LogoutButton/>
             <h3>Welcome {user.first_name}</h3>
             <h1>Home page: where you can search for items (future recommended page)</h1>
-            <Modal isOpen={displayOnboard} onRequestClose={closeOnboarding} style={customStyles} ariaHideApp={false}>
-                <OnboardingPopup onClose={closeOnboarding}/>
+            <Modal isOpen={displayOnboard} style={customStyles} ariaHideApp={false}>
+                <OnboardingPopup setDisplayOnboard={setDisplayOnboard}/>
             </Modal>
         </div>
         
