@@ -5,8 +5,12 @@ import UnauthenticatedApp from './UnauthenticatedApp';
 
 export default function App() {
 
-  const { user } = useContext(AccountContext);
-  
+  const { user, isLoading } = useContext(AccountContext);
+  console.log(user, isLoading);
+  if (isLoading) {
+    return "Loading...";
+  }
+
   return (
     <React.Fragment>
       {user ? <AuthenticatedApp/> : <UnauthenticatedApp/>}
