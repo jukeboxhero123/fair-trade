@@ -33,7 +33,7 @@ export default function CreateAccount() {
                 <label> Email </label>
                 <input value={email} onChange={(e) => setEmail(e.target.value)}></input>
                 <label> Password </label>
-                <input value={password} onChange={(e) => setPassword(e.target.value)}></input>
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                 <button type="submit">Signup</button>
             </form>
         </div>

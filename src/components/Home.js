@@ -16,26 +16,16 @@ const customStyles = {
   };
 
 export default function Home() {
-    const [displayOnboard, setDisplayOnboard] = useState(false)
-
     const { user } = useContext(AccountContext);
-
-    const openOnboarding =()=>{
-        // change in future to open depending on onBoarding value in yongo
-        setDisplayOnboard(true)
-    }
-    const closeOnboarding =()=>{
-        setDisplayOnboard(false)
-    }
+    const [displayOnboard, setDisplayOnboard] = useState(!user.is_onboarded);
 
     return (
         <div>
             <LogoutButton/>
             <h3>Welcome {user.first_name}</h3>
             <h1>Home page: where you can search for items (future recommended page)</h1>
-            <button onClick={openOnboarding}>Click to Open Onboarding</button>
-            <Modal isOpen={displayOnboard} onRequestClose={closeOnboarding} style={customStyles} ariaHideApp={false}>
-                <OnboardingPopup onClose={closeOnboarding}/>
+            <Modal isOpen={displayOnboard} style={customStyles} ariaHideApp={false}>
+                <OnboardingPopup setDisplayOnboard={setDisplayOnboard}/>
             </Modal>
         </div>
         
