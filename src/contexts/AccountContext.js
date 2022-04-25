@@ -26,22 +26,21 @@ const getSession = async () => {
 const useAuth = () => {
 
     const [user, setUser] = useState();
-    const [getUser] = useLazyQuery(
-        GET_PROFILE, 
-        {
-            onCompleted: (data) => {
-                setUser(data.getUser);
-            }
-        }
-    );
-    
+    const [isLoading, setIsLoading] = useState(true);
+    const [getUser] = useLazyQuery(GET_PROFILE);
 
     useEffect(() => {
+        setIsLoading(true);
         getSession()
             .then(session => session.accessToken.payload.sub)
             .then(id => getUser({ variables: { userUuid: id }}))
+            .then((res) => {
+                setUser(res.data.getUser);
+                setIsLoading(false);
+            })
             .catch((err) => {
                 console.log("ERROR AUTHENTICATING:", err);
+                setIsLoading(false);
             });
     }, [getUser])
 
@@ -83,7 +82,7 @@ const useAuth = () => {
     }
 
     return {
-        user, getSession, logout, authenticate
+        user, getSession, logout, authenticate, isLoading
     }
 }
 
