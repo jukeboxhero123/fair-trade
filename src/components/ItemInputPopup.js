@@ -44,7 +44,6 @@ export default function ItemInputPopup({onClose}) {
                 }
             }
         })
-        console.log(res);
         // Create Image
         onClose();
     }
