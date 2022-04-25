@@ -6,7 +6,7 @@ import UnauthenticatedApp from './UnauthenticatedApp';
 export default function App() {
 
   const { user, isLoading } = useContext(AccountContext);
-  console.log(user, isLoading);
+
   if (isLoading) {
     return "Loading...";
   }
