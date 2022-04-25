@@ -32,7 +32,7 @@ export default function ItemInputPopup({onClose}) {
         })
 
         const image_url = url.split('?')[0]
-        const res = await createItemMutation({
+        await createItemMutation({
             variables: {
                 createItemInput: {
                     image_url,
