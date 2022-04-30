@@ -29,7 +29,7 @@ const useAuth = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [getUser] = useLazyQuery(GET_PROFILE);
 
-    useEffect(() => {
+    const setSession = () => {
         setIsLoading(true);
         getSession()
             .then(session => session.accessToken.payload.sub)
@@ -42,7 +42,11 @@ const useAuth = () => {
                 console.log("ERROR AUTHENTICATING:", err);
                 setIsLoading(false);
             });
-    }, [getUser])
+    }
+
+    useEffect(() => {
+        setSession();
+    }, [])
 
     const authenticate = async (Username, Password) => {
         return await new Promise((resolve, reject) => {
@@ -82,7 +86,7 @@ const useAuth = () => {
     }
 
     return {
-        user, getSession, logout, authenticate, isLoading
+        user, getSession, logout, authenticate, isLoading, setSession
     }
 }
 

@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react";
 import { GET_S3_PRESIGNED_URL } from "../graphql/queries/getS3PresignedUrl";
 import { CREATE_ITEM } from "../graphql/mutations/createItem";
-import { useLazyQuery, useMutation } from "@apollo/client";
+import { GET_OPTIONS } from "../graphql/queries/getOptions";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { AccountContext } from '../contexts/AccountContext';
 
 export default function ItemInputPopup({onClose}) {
@@ -11,6 +12,11 @@ export default function ItemInputPopup({onClose}) {
     const [looking_for, setLookingFor] = useState("");
     const [selectedImage, setSelectedImage] = useState(null);
 
+    const {loading, error, data } = useQuery(GET_OPTIONS, {
+        variables: {
+            name: "Category"
+        }
+    });
 
     const [getS3PresignedUrlQuery] = useLazyQuery(GET_S3_PRESIGNED_URL);
     const [createItemMutation] = useMutation(CREATE_ITEM);
@@ -48,6 +54,8 @@ export default function ItemInputPopup({onClose}) {
         onClose();
     }
 
+    if (loading) return "LOADING...";
+
     return (
         <div>
             <h1>Item Creator</h1>
@@ -74,7 +82,14 @@ export default function ItemInputPopup({onClose}) {
                 <label> Description: </label>
                 <input value={description} onChange={(e) => setDescription(e.target.value)} required></input>
                 <label> Category: </label>
-                <input value={category} onChange={(e) => setCategory(e.target.value)} required></input>
+                <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+                    <option value=""></option>
+                    {
+                        data.getOptions.options.map((option) => {
+                            return <option value={option}>{option}</option>
+                        })
+                    }
+                </select>
                 <label> Looking For: </label>
                 <input value={looking_for} onChange={(e) => setLookingFor(e.target.value)}></input>
                 <button onClick={onClose}>Cancel</button>
