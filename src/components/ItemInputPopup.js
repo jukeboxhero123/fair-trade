@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import { GET_S3_PRESIGNED_URL } from "../graphql/queries/getS3PresignedUrl";
 import { CREATE_ITEM } from "../graphql/mutations/createItem";
-import { GET_OPTIONS } from "../graphql/queries/getOptions";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { AccountContext } from '../contexts/AccountContext';
+import { GlobalContext } from '../contexts/GlobalContext';
 
 export default function ItemInputPopup({onClose}) {
     const [name, setName] = useState("");
@@ -12,17 +12,11 @@ export default function ItemInputPopup({onClose}) {
     const [looking_for, setLookingFor] = useState("");
     const [selectedImage, setSelectedImage] = useState(null);
 
-    const {loading, error, data } = useQuery(GET_OPTIONS, {
-        variables: {
-            name: "Category"
-        }
-    });
-
     const [getS3PresignedUrlQuery] = useLazyQuery(GET_S3_PRESIGNED_URL);
     const [createItemMutation] = useMutation(CREATE_ITEM);
 
     const { user: { user_uuid } } = useContext(AccountContext);
-
+    const { isLoading, categories } = useContext(GlobalContext);
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -54,7 +48,7 @@ export default function ItemInputPopup({onClose}) {
         onClose();
     }
 
-    if (loading) return "LOADING...";
+    if (isLoading) return "LOADING...";
 
     return (
         <div>
@@ -85,7 +79,7 @@ export default function ItemInputPopup({onClose}) {
                 <select value={category} onChange={(e) => setCategory(e.target.value)} required>
                     <option value=""></option>
                     {
-                        data.getOptions.options.map((option) => {
+                        categories.map((option) => {
                             return <option value={option}>{option}</option>
                         })
                     }

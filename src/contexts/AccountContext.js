@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState, useCallback } from 'react'
 import Pool from "../UserPool.js"
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import { useLazyQuery } from '@apollo/client';
@@ -29,7 +29,7 @@ const useAuth = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [getUser] = useLazyQuery(GET_PROFILE);
 
-    const setSession = () => {
+    const setSession = useCallback(() => {
         setIsLoading(true);
         getSession()
             .then(session => session.accessToken.payload.sub)
@@ -42,11 +42,11 @@ const useAuth = () => {
                 console.log("ERROR AUTHENTICATING:", err);
                 setIsLoading(false);
             });
-    }
+    }, [getUser])
 
     useEffect(() => {
         setSession();
-    }, [])
+    }, [setSession])
 
     const authenticate = async (Username, Password) => {
         return await new Promise((resolve, reject) => {
