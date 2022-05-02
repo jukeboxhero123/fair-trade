@@ -1,21 +1,19 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { AccountContext } from "../contexts/AccountContext";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const navigate = useNavigate();
-
-    const { authenticate } = useContext(AccountContext);
+    const { authenticate, setSession } = useContext(AccountContext);
     
     const onSubmit = (e) => {
         e.preventDefault();
         authenticate(email, password)
             .then((data) => {
                 console.log("LOGGED IN!", data)
-                navigate("../home");
+                setSession();
             })
             .catch((err) => console.err("LOGIN FAILED", err));
     };

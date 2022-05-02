@@ -3,6 +3,7 @@ import { GET_S3_PRESIGNED_URL } from "../graphql/queries/getS3PresignedUrl";
 import { CREATE_ITEM } from "../graphql/mutations/createItem";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { AccountContext } from '../contexts/AccountContext';
+import { GlobalContext } from '../contexts/GlobalContext';
 
 export default function ItemInputPopup({onClose}) {
     const [name, setName] = useState("");
@@ -11,12 +12,11 @@ export default function ItemInputPopup({onClose}) {
     const [looking_for, setLookingFor] = useState("");
     const [selectedImage, setSelectedImage] = useState(null);
 
-
     const [getS3PresignedUrlQuery] = useLazyQuery(GET_S3_PRESIGNED_URL);
     const [createItemMutation] = useMutation(CREATE_ITEM);
 
     const { user: { user_uuid } } = useContext(AccountContext);
-
+    const { isLoading, categories } = useContext(GlobalContext);
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -48,6 +48,8 @@ export default function ItemInputPopup({onClose}) {
         onClose();
     }
 
+    if (isLoading) return "LOADING...";
+
     return (
         <div>
             <h1>Item Creator</h1>
@@ -74,7 +76,14 @@ export default function ItemInputPopup({onClose}) {
                 <label> Description: </label>
                 <input value={description} onChange={(e) => setDescription(e.target.value)} required></input>
                 <label> Category: </label>
-                <input value={category} onChange={(e) => setCategory(e.target.value)} required></input>
+                <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+                    <option value=""></option>
+                    {
+                        categories.map((option) => {
+                            return <option value={option}>{option}</option>
+                        })
+                    }
+                </select>
                 <label> Looking For: </label>
                 <input value={looking_for} onChange={(e) => setLookingFor(e.target.value)}></input>
                 <button onClick={onClose}>Cancel</button>

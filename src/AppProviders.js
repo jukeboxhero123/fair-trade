@@ -5,6 +5,7 @@ import {
 } from "@apollo/client";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Account } from "./contexts/AccountContext";
+import { Global } from "./contexts/GlobalContext";
 
 const client = new ApolloClient({
     uri: process.env.REACT_APP_FAIR_TRADE_SERVICE_URL,
@@ -17,7 +18,9 @@ const AppProviders = ({children}) => {
         <Router>
             <ApolloProvider client={client}>
                 <Account>
-                    {children}
+                    <Global>
+                        {children}
+                    </Global>
                 </Account>
             </ApolloProvider>
         </Router>
