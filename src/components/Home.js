@@ -38,13 +38,7 @@ export default function Home() {
         }
     });
 
-    const [loadMoreItems] = useLazyQuery(GET_ITEM_PAGINATION, {
-        onCompleted: (data) => {
-            const { getItemPagination: { items: newItems, cursor }} = data;
-            setItems([...items, ...newItems]);
-            setCursor(cursor);
-        }
-    });
+    const [loadMoreItems] = useLazyQuery(GET_ITEM_PAGINATION);
 
     const getInput = () => {
         const input = {
@@ -77,12 +71,14 @@ export default function Home() {
         return () => clearTimeout(timeOutId);
     }, [search])
 
-    const handleLoadItems = () => {
-        loadMoreItems({
+    const handleLoadItems = async () => {
+        const { data: {getItemPagination: { items: newItems, cursor }}} = await loadMoreItems({
             variables: {
                 itemPaginationInput: getInput()
             }
         });
+        setItems([...items, ...newItems]);
+        setCursor(cursor);
     }
 
     
