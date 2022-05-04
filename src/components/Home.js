@@ -5,6 +5,7 @@ import { AccountContext } from '../contexts/AccountContext';
 import Item from './Item';
 import { GET_ITEM_PAGINATION } from '../graphql/queries/getItemPagination';
 import { useLazyQuery, useQuery } from "@apollo/client";
+import { Link } from 'react-router-dom';
 
 const customStyles = {
     content: {
@@ -65,7 +66,7 @@ export default function Home() {
             <div className="grid grid-cols-5 gap-4 mx-16 my-8"> 
                 <div className=""> Search Query Options (In Progress) </div>
                 <div className="col-span-4 grid grid-cols-5 gap-4"> 
-                    {items.map((item, idx) => <Item item={item} key={idx}></Item>)} 
+                    {items.map((item, idx) => <Link to={`/item/${item.item_uuid}`} state={{ item }}><Item item={item} key={idx}/></Link>)} 
                 </div>
                 <div></div>
                 <div className="col-span-4 grid place-items-center">

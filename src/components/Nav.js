@@ -27,7 +27,7 @@ export default function Nav() {
               <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/81/pregnant-woman_1f930.png" className="mr-3 h-6 sm:h-9" alt="FairTrade Logo" />
               <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">FairTrade</span>
           </a>
-          <button onClick={() => { setDisplayItemInput(true) }} className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700\">Create New Item</button>
+          <button onClick={() => { setDisplayItemInput(true) }} className="h-10 px-5 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-full focus:shadow-outline hover:bg-indigo-800">Create New Item</button>
           <div className="hidden w-full md:block md:w-auto" id="mobile-menu">
             <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
               <li>
