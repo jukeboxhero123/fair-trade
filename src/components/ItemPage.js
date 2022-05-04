@@ -1,11 +1,10 @@
 import React, { useContext } from 'react'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { AccountContext } from '../contexts/AccountContext';
 import { useQuery } from '@apollo/client';
 import { GET_ITEM } from '../graphql/queries/getItem';
 
 export default function ItemPage() {
-  const location = useLocation();
   const { user } = useContext(AccountContext);
   const { id } = useParams();
   const { loading, error, data } = useQuery(GET_ITEM, { variables: { itemUuid: id }});
