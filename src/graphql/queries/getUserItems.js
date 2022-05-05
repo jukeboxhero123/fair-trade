@@ -13,6 +13,10 @@ export const GET_USER_ITEMS = gql`
       status
       updated_at
       user_uuid
+      user {
+        first_name
+        last_name
+      }
     }
   }
 `;

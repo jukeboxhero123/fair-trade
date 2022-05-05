@@ -6,10 +6,8 @@ export const CREATE_TRADE = gql`
         trade_uuid
         sender_uuid
         receiver_uuid
-        sender_items
-        receiver_items
         state
-        trade_history
+        previous_trade_uuid
         created_at
         updated_at
     }

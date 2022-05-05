@@ -2,6 +2,7 @@ import React from 'react';
 
 export default function Item(props) {
     const { item } = props;
+    console.log(item)
     return (
         <div className="border grid place-items-center rounded-md p-4">
             <img height="100px" width="100px" src={item.image_url} alt=""/>
