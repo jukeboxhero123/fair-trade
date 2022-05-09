@@ -58,10 +58,9 @@ export default function CreateTrade() {
           createTradeInput: {
               "sender_uuid": user.user_uuid,
               "receiver_uuid": item.user_uuid,
-              "sender_items": senderItems.map(({ item_uuid }) => item_uuid),
-              "receiver_items": receiverItems.map(({ item_uuid }) => item_uuid),
+              "sender_item_uuids": senderItems.map(({ item_uuid }) => item_uuid),
+              "receiver_item_uuids": receiverItems.map(({ item_uuid }) => item_uuid),
               "state": "Pending",
-              "trade_history": ""
           }
       }
     });

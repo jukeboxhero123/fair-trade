@@ -14,6 +14,10 @@ export const GET_ITEM_PAGINATION = gql`
             status
             updated_at
             user_uuid
+            user {
+              first_name
+              last_name
+            }
         }
         cursor
     }

@@ -30,6 +30,8 @@ export default function ItemPage() {
                 <br/>
                 <p className='text-base'>Last updated at: {data.getItem.updated_at}</p>  
                 <br/>
+                <p className='text-base'>Listed By: {data.getItem.user.first_name} {data.getItem.user.last_name}</p>  
+                <br/>
               </div>
               {
                 user.user_uuid !== data.getItem.user_uuid ?
