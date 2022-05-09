@@ -13,6 +13,10 @@ export const GET_ITEM = gql`
       created_at
       updated_at
       image_url
+      user {
+        first_name
+        last_name
+      }
     }
   }
 `;
