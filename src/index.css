@@ -16,6 +16,10 @@ code {
     monospace;
 }
 
+#root {
+  height: 100vh;
+}
+
 @layer base {
   h1 {
     @apply text-2xl;
