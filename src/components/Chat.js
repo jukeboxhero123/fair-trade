@@ -1,7 +1,10 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import { useLazyQuery } from '@apollo/client'; 
+import { useLazyQuery, useSubscription, useQuery, useMutation } from '@apollo/client'; 
 import { GET_TRADE } from '../graphql/queries/getTrade';
 import { AccountContext } from '../contexts/AccountContext';
+import { NEW_CHAT } from '../graphql/subscriptions/newChat';
+import { GET_TRADE_CHAT } from '../graphql/queries/getTradeChat';
+import { SEND_NEW_CHAT } from '../graphql/mutations/newChat';
 
 export default function Chat({trade_uuid, updateTradeStates}) {
 
@@ -9,6 +12,8 @@ export default function Chat({trade_uuid, updateTradeStates}) {
     const [isReceiver, setIsReceiver] = useState(true);
 
     const [trade, setTrade] = useState(null);
+    const [chats, setChats] = useState([]);
+    const [message, setMessage] = useState("");
 
     const [loadTrade] = useLazyQuery(GET_TRADE, {
         onCompleted: (data) => {
@@ -19,13 +24,34 @@ export default function Chat({trade_uuid, updateTradeStates}) {
             }
         }
     });
+    const [loadTradeChat, { data: tradeChat, loading: loadingTradeChat, error }] = useLazyQuery(GET_TRADE_CHAT, { 
+        variables: { 
+            tradeUuid: trade_uuid 
+        },
+        fetchPolicy: 'network-only',
+        onCompleted: (data) => {
+            setChats(data ? data.getTradeChat.chats : []);
+        } 
+    });
+    const { data, loading } = useSubscription(NEW_CHAT, { 
+        variables: { 
+            chatUuid: tradeChat?.getTradeChat.chat_uuid
+        },
+    });
 
+    useEffect(() => {
+        if (data) {
+            setChats([...chats, data.newChat])
+        }
+    }, [data, setChats])
+        
     useEffect(() => {
         loadTrade({
             variables: { 
                 tradeUuid: trade_uuid
             }
         })
+        loadTradeChat()
     }, [trade_uuid, loadTrade]);
 
     const chatEl = useRef(null);
@@ -61,21 +87,41 @@ export default function Chat({trade_uuid, updateTradeStates}) {
         </div>
     }
 
+    const [createChatMutation] = useMutation(SEND_NEW_CHAT);
+    
+    const sendMessage = async (e) => {
+        e.preventDefault();
+        await createChatMutation({
+            variables: {
+                createChatInput: {
+                    "chat_uuid": tradeChat?.getTradeChat.chat_uuid,
+                    "message": message,
+                    "sender_uuid": user.user_uuid               
+                }
+            }
+        });
+        setMessage("");  
+    }
+
     return (
         <div className="grid grid-cols-3 gap-4 h-full">
             <div className="col-span-2 h-full">
                 <div className="overflow-auto h-[calc(100vh-150px)] p-4">
-                    {/* { text.concat(text).map((text, idx) => {
-                        return <div key={idx} className="">{text.message}</div>
-                    }) }    */}
+                    { chats.map((chat, idx) => {
+                        let style = "bg-slate-200";
+                        if (chat.sender_uuid === user.user_uuid) {
+                            style = "bg-blue-200";
+                        }
+                        return <div key={idx} className={style}> {chat.message}</div>
+                    }) }   
                     <div 
                         style={{ float:"left", clear: "both" }}
                         ref={chatEl}>
                     </div>  
                 </div>
                 <div className="border h-[calc(0%+50px)]">
-                    <form className="float-left w-[calc(100%-50px)] h-full">
-                        <input type="text" placeholder="Write your message..." className="w-full h-full rounded-md"></input>
+                    <form className="float-left w-[calc(100%-50px)] h-full" onSubmit={sendMessage}>
+                        <input type="text" placeholder="Write your message..." className="w-full h-full rounded-md" value={message} onChange={(e) => setMessage(e.target.value)}></input>
                     </form>
                 </div>
             </div>
